@@ -29,9 +29,6 @@ class Candy():
         self.price=price
         self.list_of_ingredients=list_of_ingredients
 
-   
-
-
     @staticmethod
     def listAllCandies(list_of_candies: list):
     
@@ -52,10 +49,33 @@ class Candy():
                 for ingredient in candie.list_of_ingredients:
                     print('\t\t Name: ',ingredient.name)
                     print('\t\t Category: ',ingredient.category)
+            
+            #Script was excuted successfully 
+            sys.exit(0)
 
         except Exception as e:
+            #Script failed 
             print('Error running function List All Candies ' , e)
             sys.exit(1)    
+
+    @staticmethod
+    def parseIngredientType(ingredient):
+        '''
+                Function responsible for categorization of the ingredients.
+                Argrs: 
+                    ingredient: Json object with ingredients elements
+                Return:
+                    Ingredient object
+        '''
+        
+        category = ingredient['category']
+                    
+        if category == "artifical":
+            return ArtificialIngredient(ingredient['name'], ingredient['category'])
+        elif category == "natural": 
+            return NaturalIngredient(ingredient['name'], ingredient['category'])
+        else:
+            return UnknowIngredient(ingredient['name'],'Unknown')
 
 
     @staticmethod
@@ -82,16 +102,8 @@ class Candy():
             for ingredients in json_list_of_ingredients:
                 
                 for aux in ingredients['ingredients']:
-                    category = aux['category']
                     
-                    if category == "artifical":
-                        artificial_ingredient = ArtificialIngredient(aux['name'], aux['category'])
-                        list_of_ingredients.append(artificial_ingredient)
-                    elif category == "natural": 
-                        natural_ingredient = NaturalIngredient(aux['name'], aux['category'])
-                        list_of_ingredients.append(natural_ingredient)
-                    else:
-                        print('Unknow Category')
+                    list_of_ingredients.append(Candy.parseIngredientType(aux))
 
                 candy = Candy(ingredients['name'],ingredients['price'],list_of_ingredients)
                 list_of_candies.append(candy)
