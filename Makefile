@@ -1,5 +1,5 @@
 IMAGE_NAME := python3
-PORT := 5000
+PORT := 80
 TAG := latest
 SCRIPT := run.py
 
