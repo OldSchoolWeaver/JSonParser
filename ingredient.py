@@ -33,8 +33,6 @@ class Ingredient(ABC):
         '''
         pass
 
- 
-
 
 class NaturalIngredient(Ingredient):
 
@@ -123,7 +121,7 @@ class UnknowIngredient(Ingredient):
             name: name of the ingredient
             category: category of the ingredient
         '''
-        super(ArtificialIngredient,self).__init__(name, category) #uses the constructor of the interface
+        super(UnknowIngredient,self).__init__(name, category) #uses the constructor of the interface
     
     def name(self):
         """

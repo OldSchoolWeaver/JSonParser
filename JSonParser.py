@@ -8,7 +8,7 @@ import numpy as np
 from datetime import date
 import datetime
 import json
-from ingredient import NaturalIngredient, ArtificialIngredient
+from ingredient import NaturalIngredient, ArtificialIngredient, UnknowIngredient
 from aux import loadJson
 
 class Candy():
@@ -59,7 +59,7 @@ class Candy():
             sys.exit(1)    
 
     @staticmethod
-    def parseIngredientType(ingredient):
+    def parseIngredientType(ingredient: dict):
         '''
                 Function responsible for categorization of the ingredients.
                 Argrs: 
@@ -79,7 +79,7 @@ class Candy():
 
 
     @staticmethod
-    def createsCandyList(json_list_of_ingredients: list):
+    def createsCandyList(json_list_of_candies: list):
 
         """
             This function receives a json list of ingredients. It iterates trough the list creating the Candy Object 
@@ -93,22 +93,21 @@ class Candy():
 
         """    
 
-
         list_of_ingredients = [] #Initiates list
         list_of_candies = [] #Initiates list
         
         try:
 
-            for ingredients in json_list_of_ingredients:
-                
-                for aux in ingredients['ingredients']:
-                    
+            for candy in json_list_of_candies:
+              
+                for aux in candy['ingredients']:
                     list_of_ingredients.append(Candy.parseIngredientType(aux))
 
-                candy = Candy(ingredients['name'],ingredients['price'],list_of_ingredients)
-                list_of_candies.append(candy)
+                new_candy = Candy(candy['name'],candy['price'],list_of_ingredients)
+                list_of_candies.append(new_candy)
                 
-            # list with all the candies    
+                list_of_ingredients = [] #Resets the list
+
             return list_of_candies
 
         except Exception as e:
